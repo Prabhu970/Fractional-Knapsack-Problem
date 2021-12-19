@@ -1,0 +1,43 @@
+class ItemValue:
+    """Item Value DataClass"""
+    def __init__(self, wt, profit, ind):
+        self.wt = wt
+        self.profit = profit
+        self.ind = ind
+        self.cost = profit // wt  # profit ratio
+    def __lt__(self, other):
+        return self.cost < other.cost  # operator overlaoding
+# Greedy Approach
+class FractionalKnapSack:
+    """Time Complexity O(n log n)"""
+    def getMaxValue(wt, profit, capacity):
+        """function to get maximum value """
+        iVal = []
+        for i in range(len(wt)):
+            iVal.append(ItemValue(wt[i], profit[i], i))  # to get profit ratio
+        # sorting items by value
+        iVal.sort(reverse=True)
+        totalValue = 0
+        for i in iVal:
+            curWt = int(i.wt)
+            curVal = int(i.profit)
+            if capacity - curWt >= 0:
+                capacity -= curWt
+                totalValue += curVal  # total profit
+            else:  # fractional knapshack
+                fraction = capacity / curWt
+                totalValue += curVal * fraction
+                capacity = int(capacity - (curWt * fraction))
+                break
+        return totalValue
+wt = []
+profit = []
+print("*******URK20CS1158  SANKINENI PRABHU GOPAL VAMSHI *******\n")
+capacity = int(input("Enter the capcity of the knapshack: "))
+for i in input("Enter the weights of the objects: ").split():
+    wt.append(int(i))
+for i in input("Enter the profit of the objects: ").split():
+    profit.append(int(i))
+maxprofit = FractionalKnapSack.getMaxValue(wt, profit, capacity)
+print("*******URK20CS1158  SANKINENI PRABHU GOPAL VAMSHI *******\n")
+print("Maximum profit in the Knapshack =", maxprofit)
